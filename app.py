@@ -2,7 +2,9 @@ from flask import Flask, request, jsonify, render_template
 import google.generativeai as genai
 
 # Initialize Gemini API
-genai.configure(api_key="AIzaSyBH9aVSEb8kj6owXW-rWHz5-LrGlQzrmmo")  # Replace with your real key
+import os
+genai.configure(api_key=os.getenv("AIzaSyBH9aVSEb8kj6owXW-rWHz5-LrGlQzrmmo"))
+
 
 # Create Flask app
 app = Flask(__name__)
@@ -38,4 +40,5 @@ def ask():
 
 # Run app
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))  # use Render's assigned port
+    app.run(host='0.0.0.0', port=port)

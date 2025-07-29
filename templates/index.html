@@ -1,35 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Little Love Chatbot</title>
-    <link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-    <div class="chat-container">
-        <h2>Ask Little Love</h2>
-        <div id="chat-box"></div>
-        <input type="text" id="question" placeholder="Type your question..." />
-        <button onclick="sendQuestion()">Ask</button>
-    </div>
+<script>
+    async function sendQuestion() {
+        const question = document.getElementById("question").value;
+        const chatBox = document.getElementById("chat-box");
 
-    <script>
-        async function sendQuestion() {
-            const question = document.getElementById("question").value;
-            const chatBox = document.getElementById("chat-box");
+        // Display user message
+        chatBox.innerHTML += `<div class='user-msg'>👩‍👧‍👦 You: ${question}</div>`;
 
-            chatBox.innerHTML += `<div class='user-msg'>👩‍👧‍👦 You: ${question}</div>`;
+        // Send to backend
+        const res = await fetch("/ask", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({question})
+        });
 
-            const res = await fetch("/ask", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({question})
-            });
+        const data = await res.json();
 
-            const data = await res.json();
-
-            chatBox.innerHTML += `<div class='bot-msg'> Little Love: ${data.answer}</div>`;
-            document.getElementById("question").value = "";
+        // Display bot reply (check for error or valid answer)
+        if (data.answer) {
+            chatBox.innerHTML += `<div class='bot-msg'>🤖 Little Love: ${data.answer}</div>`;
+        } else if (data.error) {
+            chatBox.innerHTML += `<div class='bot-msg error'>⚠️ Error: ${data.error}</div>`;
+        } else {
+            chatBox.innerHTML += `<div class='bot-msg error'>⚠️ Unknown error occurred.</div>`;
         }
-    </script>
-</body>
-</html>
+
+        document.getElementById("question").value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>

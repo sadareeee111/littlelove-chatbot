@@ -14,12 +14,10 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-# Chatbot API route
 @app.route('/ask', methods=['POST'])
 def ask():
     user_question = request.json.get('question')
 
-    # Custom prompt for Little Love assistant
     prompt = (
         "You are a friendly assistant for the Little Love brand. "
         "Little Love makes educational and business-building kits for children aged 4–12. "
@@ -33,10 +31,11 @@ def ask():
         model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(prompt)
 
-        return jsonify({'answer': response.text})
-
+        return jsonify({"answer": response.text.strip()})
+    
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        return jsonify({"error": str(e)}), 500
+
 
 # Run app
 if __name__ == '__main__':

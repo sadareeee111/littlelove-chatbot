@@ -1,17 +1,15 @@
 from flask import Flask, request, jsonify, render_template
 import google.generativeai as genai
-from dotenv import load_dotenv
-load_dotenv()
-
-# Initialize Gemini API
 import os
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+from dotenv import load_dotenv
 
+# Load .env and configure Gemini
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # Create Flask app
 app = Flask(__name__)
 
-# Homepage route – loads chatbot UI
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -30,14 +28,15 @@ def ask():
     )
 
     try:
-        chat_model = genai.GenerativeModel("gemini-pro")
-        chat = chat_model.start_chat()
+        model = genai.GenerativeModel("gemini-pro")
+        chat = model.start_chat()
         response = chat.send_message(prompt)
         return jsonify({"answer": response.text.strip()})
-
+    
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+# Run app
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Use Render's provided port
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)

@@ -28,7 +28,8 @@ def ask():
     )
 
     try:
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel(model_name="models/gemini-pro")
+
         response = model.generate_content(prompt)
 
         return jsonify({"answer": response.text.strip()})

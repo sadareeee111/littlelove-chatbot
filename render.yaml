@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: littlelove-chatbot
+    env: python
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: GOOGLE_API_KEY
+        value: AIzaSyBH9aVSEb8kj6owXW-rWHz5-LrGlQzrmmo

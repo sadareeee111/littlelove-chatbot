@@ -30,18 +30,10 @@ def ask():
     )
 
     try:
-        model = genai.GenerativeModel(model_name="models/gemini-pro")
-
-
-        response = model.generate_content(prompt)
-
+        chat_model = genai.GenerativeModel("gemini-pro")
+        chat = chat_model.start_chat()
+        response = chat.send_message(prompt)
         return jsonify({"answer": response.text.strip()})
-    
+
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-
-
-# Run app
-if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # use Render's assigned port
-    app.run(host='0.0.0.0', port=port)

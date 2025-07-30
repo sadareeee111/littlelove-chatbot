@@ -1,5 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import google.generativeai as genai
+from dotenv import load_dotenv
+load_dotenv()
 
 # Initialize Gemini API
 import os
@@ -29,6 +31,7 @@ def ask():
 
     try:
         model = genai.GenerativeModel(model_name="models/gemini-pro")
+
 
         response = model.generate_content(prompt)
 

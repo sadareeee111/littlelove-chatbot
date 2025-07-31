@@ -28,7 +28,7 @@ def ask():
     )
 
     try:
-        model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
+        model = genai.GenerativeModel("models/gemini-1.5-flash-latest")
 
         chat = model.start_chat()
         response = chat.send_message(prompt)

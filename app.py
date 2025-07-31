@@ -28,7 +28,8 @@ def ask():
     )
 
     try:
-        model = genai.GenerativeModel("gemini-pro")
+        model = genai.GenerativeModel("models/gemini-1.5-pro-latest")
+
         chat = model.start_chat()
         response = chat.send_message(prompt)
         return jsonify({"answer": response.text.strip()})
